@@ -1,0 +1,26 @@
+# macOS
+.DS_Store
+._*
+
+# Logs
+rpdk.log*
+
+# Compiled file
+bin/
+
+# Vender
+vender/
+
+# Contains credentials
+sam-tests/
+*live*
+*Live*
+config/
+
+# Cruft
+inputs-mock/
+scratch/
+tmp/
+
+# Jetbrains
+.idea/

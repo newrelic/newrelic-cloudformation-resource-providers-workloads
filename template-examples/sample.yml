@@ -1,0 +1,10 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: Sample New Relic Tagging Template
+Resources:
+  Dashboard1:
+    Type: 'newrelic::cloudformation::tagging'
+    Properties:
+      EntityGuid: "YOUR_ENTITY_GUID"
+      Tags:
+        - Key: "Template-Key1"
+          Values: [ "Template-Key1-Value1-Create", "Template-Key1-Value2-Create" ]
