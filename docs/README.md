@@ -1,4 +1,4 @@
-# NewRelic::CloudFormation::Workloads
+# NewRelic::Observability::Workloads
 
 CRUD operations for New Relic Workloads via the NerdGraph API
 
@@ -10,7 +10,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "Type" : "NewRelic::CloudFormation::Workloads",
+    "Type" : "NewRelic::Observability::Workloads",
     "Properties" : {
         "<a href="#sourceguid" title="SourceGuid">SourceGuid</a>" : <i>String</i>,
         "<a href="#duplicatename" title="DuplicateName">DuplicateName</a>" : <i>String</i>,
@@ -24,7 +24,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 ### YAML
 
 <pre>
-Type: NewRelic::CloudFormation::Workloads
+Type: NewRelic::Observability::Workloads
 Properties:
     <a href="#sourceguid" title="SourceGuid">SourceGuid</a>: <i>String</i>
     <a href="#duplicatename" title="DuplicateName">DuplicateName</a>: <i>String</i>

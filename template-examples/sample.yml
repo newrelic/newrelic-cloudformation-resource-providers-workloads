@@ -1,10 +1,11 @@
 AWSTemplateFormatVersion: 2010-09-09
-Description: Sample New Relic Tagging Template
+Description: Sample New Relic Workloads Template
 Resources:
-  Dashboard1:
-    Type: 'newrelic::cloudformation::tagging'
+  Resource1:
+    Type: 'NewRelic::Observability::Workloads'
     Properties:
-      EntityGuid: "YOUR_ENTITY_GUID"
-      Tags:
-        - Key: "Template-Key1"
-          Values: [ "Template-Key1-Value1-Create", "Template-Key1-Value2-Create" ]
+      Workload: >-
+        workload: {entityGuids: "MTA3NDA4M3xWSVp8REFTSEJPQVJEfGRhOjE3MTk0NTk", name: "CloudFormationTest-Create"}
+Outputs:
+  CustomResourceAttribute1:
+    Value: !GetAtt  Resource1.Guid

@@ -1,6 +1,6 @@
 {
     "artifact_type": "RESOURCE",
-    "typeName": "NewRelic::CloudFormation::Workloads",
+    "typeName": "NewRelic::Observability::Workloads",
     "language": "go",
     "runtime": "go1.x",
     "entrypoint": "handler",

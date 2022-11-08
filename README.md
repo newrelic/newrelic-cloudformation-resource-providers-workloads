@@ -1,9 +1,6 @@
 [sh![New Relic Experimental header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Experimental.png)](https://opensource.newrelic.com/oss-category/#new-relic-experimental)
-[API]: Workloads
 
-[APIURL]: https://docs.newrelic.com/docs/apis/nerdgraph/examples/nerdgraph-workloads-api-tutorials/
-
-# NewRelic::CloudFormation::[API]
+# NewRelic::Observability::Workloads
 
 ![GitHub forks](https://img.shields.io/github/forks/newrelic-experimental/newrelic-experimental-FIT-template?style=social)
 ![GitHub stars](https://img.shields.io/github/stars/newrelic-experimental/newrelic-experimental-FIT-template?style=social)
@@ -21,14 +18,16 @@
 ![GitHub pull requests closed](https://img.shields.io/github/issues-pr-closed/newrelic-experimental/newrelic-experimental-FIT-template)
 
 ## Description
-This Cloud Formation Custom Resource provides a CRUDL interface to the New Relic [NerdGraph (GraphQL) Workloads API] [APIURL] for Cloud Formation stacks.
+This Cloud Formation Custom Resource provides a CRUDL interface to the New Relic [NerdGraph (GraphQL) Workloads API](https://docs.newrelic.com/docs/apis/nerdgraph/examples/nerdgraph-workloads-api-tutorials/) for Cloud Formation stacks.
 
-## Model
+## Prerequisites
+This document assumes familiarity with using CloudFormation Public extensions in CloudFormation templates. If you are not familiar with this [start here](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry-public.html)
+
+## [Configuration](https://github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/blob/main/CONFIGURATION.md)
+
+## CloudFormation Model
 | Field           | Type   | Default                          | Create | Duplicate | Update | Delete | Read | Notes                                                                                                                       |
 |-----------------|--------|----------------------------------|:------:|:---------:|:------:|:------:|:----:|-----------------------------------------------------------------------------------------------------------------------------|
-| AccountID       | string | none                             |   R    |     R     |        |        |  R   | [New Relic Account ID](https://docs.newrelic.com/docs/accounts/accounts-billing/account-structure/account-id/)              |
-| APIKey          | string | none                             |   R    |     R     |   R    |   R    |  R   | [New Relic User Key](https://docs.newrelic.com/docs/apis/intro-apis/new-relic-api-keys/#overview-keys)                      |
-| Endpoint        | string | https://api.newrelic.com/graphql |   O    |     O     |   O    |   O    |  O   | [API endpoints](https://docs.newrelic.com/docs/apis/nerdgraph/get-started/introduction-new-relic-nerdgraph/#authentication) |
 | Guid            | string | none                             |        |           |   R    |   R    |  R   |                                                                                                                             |
 | ListQueryFilter | string | none                             |        |           |        |        |      |                                                                                                                             |
 | Variables       | Object | none                             |        |           |        |        |      |                                                                                                                             |
@@ -42,7 +41,7 @@ Key:
 - Blank- unused
 
 ### Guid
-`Guid` New Relic entity identifier. Typically the `guid` vaule from Nerd Graph.
+`Guid` New Relic entity identifier. Typically the `guid` value from Nerd Graph.
 
 ### ListQueryFilter
 `actor` `entitySearch` query string. The query string can search for an exact or fuzzy match on name, as well as searching several other attributes.
@@ -83,7 +82,8 @@ mutation {
 ```
 _NOTE_: the `{{{` and `}}}` are for [Moustache](#Moustache) processing.
 
-If you use a JSON CloudFormation template you will have to stringify the GraphQL fragment. YAML CloudFormation templates should follow [YAML multi-line input rules](https://yaml-multiline.info/) and avoid stringification.
+If you use a JSON CloudFormation template you will have to [JSON stringify](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#try_it) the GraphQL fragment. YAML CloudFormation templates 
+should follow [YAML multi-line input rules](https://yaml-multiline.info/) and avoid stringification.
 
 
 ## Moustache
@@ -93,6 +93,17 @@ general all you need to know is use triple curly braces.
 ## Example
 An example of a YAML configuration, this is valid and works:
 ```yaml
+AWSTemplateFormatVersion: 2010-09-09
+Description: Sample New Relic Workloads Template
+Resources:
+  Resource1:
+    Type: 'NewRelic::Observability::Workloads'
+    Properties:
+      Workload: >-
+        workload: {entityGuids: "MTA3NDA4M3xWSVp8REFTSEJPQVJEfGRhOjE3MTk0NTk", name: "CloudFormationTest-Create"}
+Outputs:
+  CustomResourceAttribute1:
+    Value: !GetAtt  Resource1.Guid
 ```
 
 ## Troubleshooting
@@ -100,53 +111,7 @@ An example of a YAML configuration, this is valid and works:
 - `Debug` log level for mustache substitution
 - Validate mutation using the [Explorer](https://api.newrelic.com/graphiql)
 
-## Building
-- Install Docker
-- Install Golang
-- [Install the CloudFormation Command Line Interface (CFN-CLI)](https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/what-is-cloudformation-cli.html)
-- `make clean build `
-
-## Testing
-- Start Docker
-- Activate `cfn-cli`, usually `source ~/.virtenv/aws-cfn-cli/bin/activate`
-- Build and start the container `make clean build ; sam local start-lambda --warm-containers eager`
-- Run the [CloudFormation Contract Tests](https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/contract-tests.html) `cfn test`
-- NOTE: don't use a `duplicate` configured `inputs_x_create.json` file in the same `cfn test` run as a normal `create`, things break badly. Only one test type at a time. 
-
-## Publishing
-```bash
-# Double check the resulting zip file for security leaks!
-cfn submit --dry-run
-# Send the resource to AWS, the result is a private resource. NOTE: make clean build clears credentials from bin/
-rm newrelic-cloudformation-*.zip  ; make clean build  ; cfn submit --set-default  --region us-east-1 
-# Test the private resource with the sample template to ensure it works
-aws cloudformation deploy  --force-upload --disable-rollback --region us-east-1 --template-file template-examples-live/live.yml --stack-name test-stack-workloads
-# Tell AWS to run the Contract Tests, required for going public
-aws cloudformation test-type --region us-east-1 --log-delivery-bucket newrelic--cloudformation--custom--resources --arn arn:aws:cloudformation:us-east-1:830139413159:type/resource/newrelic-cloudformation-workload
-# Check the result
-aws cloudformation describe-type --region us-east-1  --arn arn:aws:cloudformation:us-east-1:830139413159:type/resource/newrelic-cloudformation-workloads
-# Also the logs are in CloudWatch. They end in .zip but are really gunzip so
-# gunzip -S .zip <file>
-# Publish the extension publicly AFTER pushing the final version to GitHub AND generating/tagging a release
-# IMPORTANT!
-#   --public-version-number (string)
-#   The version number to assign to this version of the extension.
-#   Use the following format, and adhere to semantic versioning when assigning a version number to your extension:
-#     MAJOR.MINOR.PATCH
-#   For more information, see Semantic Versioning 2.0.0 .
-#   If you don’t specify a version number, CloudFormation increments the version number by one minor version release.
-#   You cannot specify a version number the first time you publish a type. CloudFormation automatically sets the first version number to be 1.0.0 .
-#
-# It's a good idea to not publish until everything is ready AND version 1.0.0 is release in Git!
-# KEEP IT ALL IN-SYNC!
-#
-# Git
-#
-aws cloudformation publish-type --region us-east-1  --arn arn:aws:cloudformation:us-east-1:830139413159:type/resource/newrelic-cloudformation-workloads
-aws cloudformation describe-type --region us-east-1  --arn arn:aws:cloudformation:us-east-1:830139413159:type/resource/newrelic-cloudformation-workloads
-```
-### Notes
-- If you see an `Exception: Could not assume specified role...` error message in the test log then you probably have a `cfn` generated role and they're not correct. As this resource uses no other AWS resources a Role is not required.
+## [Development](https://github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/blob/main/DEVELOPMENT.md)
 
 ## Helpful links
 - [CloudFormation CLI User Guide](https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/what-is-cloudformation-cli.html)

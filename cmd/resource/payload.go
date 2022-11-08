@@ -39,7 +39,7 @@ func (p *Payload) AppendToResourceModels(m model.Model) {
 // These are API specific, must be configured per API
 //
 
-var typeName = "NewRelic::CloudFormation::Workloads"
+var typeName = "NewRelic::Observability::Workloads"
 
 func (p *Payload) NewModelFromGuid(g interface{}) (m model.Model) {
    s := fmt.Sprintf("%s", g)
@@ -59,6 +59,46 @@ func (p *Payload) GetGuid() *string {
    return p.model.Guid
 }
 
+func (p *Payload) GetGuidKey() string {
+   return "guid"
+}
+
+func (p *Payload) GetVariables() map[string]string {
+   // ACCOUNTID comes from the configuration
+   // NEXTCURSOR is a _convention_
+
+   if p.model.Variables == nil {
+      p.model.Variables = make(map[string]string)
+   }
+
+   if p.model.Guid != nil {
+      p.model.Variables["GUID"] = *p.model.Guid
+   }
+
+   if p.model.Workload != nil {
+      p.model.Variables["WORKLOAD"] = *p.model.Workload
+   }
+
+   lqf := ""
+   if p.model.ListQueryFilter != nil {
+      lqf = *p.model.ListQueryFilter
+   }
+   p.model.Variables["LISTQUERYFILTER"] = lqf
+
+   return p.model.Variables
+}
+
+func (p *Payload) GetErrorKey() string {
+   return "type"
+}
+
+func (p *Payload) GetResultKey(a model.Action) string {
+   return p.GetGuidKey()
+}
+
+func (p *Payload) NeedsPropagationDelay(a model.Action) bool {
+   return true
+}
 func (p *Payload) GetCreateMutation() string {
    return `
 mutation {
@@ -138,45 +178,4 @@ func (p *Payload) GetListQueryNextCursor() string {
   }
 }
 `
-}
-
-func (p *Payload) GetGuidKey() string {
-   return "guid"
-}
-
-func (p *Payload) GetVariables() map[string]string {
-   // ACCOUNTID comes from the configuration
-   // NEXTCURSOR is a _convention_
-
-   if p.model.Variables == nil {
-      p.model.Variables = make(map[string]string)
-   }
-
-   if p.model.Guid != nil {
-      p.model.Variables["GUID"] = *p.model.Guid
-   }
-
-   if p.model.Workload != nil {
-      p.model.Variables["WORKLOAD"] = *p.model.Workload
-   }
-
-   lqf := ""
-   if p.model.ListQueryFilter != nil {
-      lqf = *p.model.ListQueryFilter
-   }
-   p.model.Variables["LISTQUERYFILTER"] = lqf
-
-   return p.model.Variables
-}
-
-func (p *Payload) GetErrorKey() string {
-   return "type"
-}
-
-func (p *Payload) GetResultKey(a model.Action) string {
-   return p.GetGuidKey()
-}
-
-func (p *Payload) NeedsPropagationDelay(a model.Action) bool {
-   return true
 }

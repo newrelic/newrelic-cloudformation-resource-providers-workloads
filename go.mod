@@ -4,11 +4,11 @@ go 1.19
 
 require (
 	github.com/aws-cloudformation/cloudformation-cli-go-plugin v1.0.3
-	github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common v0.0.1
+	github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common v0.2.0
 	github.com/sirupsen/logrus v1.9.0
 )
 
-replace github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common => ../newrelic-cloudformation-resource-providers-common
+//replace github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common => ../newrelic-cloudformation-resource-providers-common
 
 require (
 	github.com/aws/aws-lambda-go v1.13.3 // indirect

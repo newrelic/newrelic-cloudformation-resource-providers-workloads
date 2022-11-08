@@ -1,4 +1,4 @@
-# NewRelic::CloudFormation::Workloads Variables
+# NewRelic::Observability::Workloads Variables
 
 ## Syntax
 
