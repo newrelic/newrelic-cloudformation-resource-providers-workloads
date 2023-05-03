@@ -2,14 +2,11 @@
   "typeName": "NewRelic::Observability::Workloads",
   "description": "CRUD operations for New Relic Workloads via the NerdGraph API",
   "sourceUrl": "https://github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-workloads",
+  "tagging": {
+    "taggable": true
+  },
   "properties": {
     "Guid": {
-      "type": "string"
-    },
-    "SourceGuid": {
-      "type": "string"
-    },
-    "DuplicateName": {
       "type": "string"
     },
     "Workload": {
@@ -19,6 +16,15 @@
       "type": "string"
     },
     "Variables": {
+      "type": "object",
+      "patternProperties": {
+        "^[A-Za-z0-9]{1,64}$": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Tags": {
       "type": "object",
       "patternProperties": {
         "^[A-Za-z0-9]{1,64}$": {

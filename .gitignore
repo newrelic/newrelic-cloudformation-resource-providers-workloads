@@ -4,6 +4,7 @@
 
 # Logs
 rpdk.log*
+*.log
 
 # Compiled file
 bin/
@@ -21,6 +22,8 @@ config/
 inputs-mock/
 scratch/
 tmp/
+*.zip
+.hypothesis/
 
 # Jetbrains
 .idea/
