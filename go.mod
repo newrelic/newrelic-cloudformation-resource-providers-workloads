@@ -8,7 +8,7 @@ require (
 	github.com/sirupsen/logrus v1.9.0
 )
 
-//replace github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common => ../newrelic-cloudformation-resource-providers-common
+replace github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common => ../newrelic-cloudformation-resource-providers-common
 
 require (
 	github.com/aws/aws-lambda-go v1.13.3 // indirect
