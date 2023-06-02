@@ -5,7 +5,7 @@ Resources:
     Type: 'NewRelic::Observability::Workloads'
     Properties:
       Workload: >-
-        workload: {entityGuids: "MTA3NDA4M3xWSVp8REFTSEJPQVJEfGRhOjE3MTk0NTk", name: "CloudFormationTest-Create"}
+         {entityGuids: "MTA3NDA4M3xWSVp8REFTSEJPQVJEfGRhOjE3MTk0NTk", name: "CloudFormationTest-Create"}
 Outputs:
-  CustomResourceAttribute1:
-    Value: !GetAtt  Resource1.Guid
+  CustomResourceGuid:
+    Value: !GetAtt Resource1.Guid

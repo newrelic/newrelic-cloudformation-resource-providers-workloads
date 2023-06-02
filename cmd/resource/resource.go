@@ -3,10 +3,10 @@ package resource
 import (
    "fmt"
    "github.com/aws-cloudformation/cloudformation-cli-go-plugin/cfn/handler"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/cferror"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/client"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/logging"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/model"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/cferror"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/client"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/logging"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/model"
    log "github.com/sirupsen/logrus"
    "os"
    "runtime/debug"
@@ -60,7 +60,7 @@ func wrap(f func(client *client.GraphqlClient, model model.Model) (event handler
    logging.Dump(log.TraceLevel, req.RequestContext, "req.RequestContext: ")
 
    sm := NewPayload(currentModel)
-   c := client.NewGraphqlClient(req, &typeName, sm, NewErrorHandler(sm))
+   c := client.NewGraphqlClient(req, &typeName, NewErrorHandler(sm), NewResultHandler())
 
    fmt.Println("")
    return f(c, sm)

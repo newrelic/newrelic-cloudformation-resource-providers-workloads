@@ -1,4 +1,4 @@
 {
-    "Workload": "workload: {name: \"CloudFormationTest-Update\"}",
+    "Workload": " {name: \"CloudFormationTest-Update\"}",
     "Tags": {"UpateTag1Key1": "UpdateTag1Value1"}
 }

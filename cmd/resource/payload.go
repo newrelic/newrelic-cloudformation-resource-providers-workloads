@@ -2,7 +2,7 @@ package resource
 
 import (
    "fmt"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/model"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/model"
    log "github.com/sirupsen/logrus"
 )
 
@@ -13,6 +13,22 @@ import (
 type Payload struct {
    model  *Model
    models []interface{}
+}
+
+func (p *Payload) SetIdentifier(g *string) {
+   p.model.Guid = g
+}
+
+func (p *Payload) GetIdentifier() *string {
+   return p.model.Guid
+}
+
+func (p *Payload) GetIdentifierKey(a model.Action) string {
+   return "guid"
+}
+
+func (p *Payload) GetTagIdentifier() *string {
+   return p.model.Guid
 }
 
 func (p *Payload) GetTags() map[string]string {
@@ -43,10 +59,6 @@ func (p *Payload) AppendToResourceModels(m model.Model) {
    p.models = append(p.models, m.GetResourceModel())
 }
 
-//
-// These are API specific, must be configured per API
-//
-
 var typeName = "NewRelic::Observability::Workloads"
 
 func (p *Payload) NewModelFromGuid(g interface{}) (m model.Model) {
@@ -56,19 +68,6 @@ func (p *Payload) NewModelFromGuid(g interface{}) (m model.Model) {
 
 func (p *Payload) GetGraphQLFragment() *string {
    return p.model.Workload
-}
-
-func (p *Payload) SetGuid(g *string) {
-   p.model.Guid = g
-   log.Debugf("SetGuid: %s", *p.model.Guid)
-}
-
-func (p *Payload) GetGuid() *string {
-   return p.model.Guid
-}
-
-func (p *Payload) GetGuidKey() string {
-   return "guid"
 }
 
 func (p *Payload) GetVariables() map[string]string {
@@ -106,17 +105,10 @@ func (p *Payload) GetErrorKey() string {
    return "type"
 }
 
-func (p *Payload) GetResultKey(a model.Action) string {
-   return p.GetGuidKey()
-}
-
-func (p *Payload) NeedsPropagationDelay(a model.Action) bool {
-   return true
-}
 func (p *Payload) GetCreateMutation() string {
    return `
 mutation {
-  workloadCreate(accountId: {{{ACCOUNTID}}}, {{{WORKLOAD}}}) {
+  workloadCreate(accountId: {{{ACCOUNTID}}}, workload: {{{WORKLOAD}}}) {
     guid
   }
 }
@@ -136,7 +128,7 @@ mutation {
 func (p *Payload) GetUpdateMutation() string {
    return `
 mutation {
-  workloadUpdate(guid: "{{{GUID}}}", {{{WORKLOAD}}}) {
+  workloadUpdate(guid: "{{{GUID}}}", workload: {{{WORKLOAD}}}) {
     guid
   }
 }

@@ -2,17 +2,17 @@ package resource
 
 import (
    "fmt"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/cferror"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/client/nerdgraph"
-   "github.com/newrelic-experimental/newrelic-cloudformation-resource-providers-common/model"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/cferror"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/client/nerdgraph"
+   "github.com/newrelic/newrelic-cloudformation-resource-providers-common/model"
    log "github.com/sirupsen/logrus"
    "strings"
 )
 
 // ErrorHandler at a minimum provides access to the default error processing.
-// If required we can provide custom processing here via composition overrides
+// If required we can provide custom processing here via composition overrides, aka type embedding https://go.dev/doc/effective_go#embedding
 type ErrorHandler struct {
-   // Use Go composition to access the default implementation
+   // Use Go composition to access the default implementation, lack of a variable name here directs go to use method forwarding
    model.ErrorHandler
    M model.Model
 }

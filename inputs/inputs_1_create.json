@@ -1,4 +1,4 @@
 {
-  "Workload": "workload: {entityGuids: \"MTA3NDA4M3xWSVp8REFTSEJPQVJEfGRhOjE3MTk0NTk\", name: \"CloudFormationTest-Create\"}",
+  "Workload": " {entityGuids: \"MTA3NDA4M3xWSVp8REFTSEJPQVJEfGRhOjE3MTk0NTk\", name: \"CloudFormationTest-Create\"}",
   "Tags": {"CreateTag1Key1": "CreateTag1Value1"}
 }
