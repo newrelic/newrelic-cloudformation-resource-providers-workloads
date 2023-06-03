@@ -140,8 +140,10 @@ func (p *Payload) GetReadQuery() string {
 {
   actor {
     entity(guid: "{{{GUID}}}") {
+      ... on WorkloadEntity {
         guid
         name
+      }
     }
   }
 }
