@@ -15,22 +15,6 @@ import (
 //
 // Generic below here, shouldn't require changes
 //
-func init() {
-   lvl, ok := os.LookupEnv("LOG_LEVEL")
-   fmt.Printf("LOG_LEVEL: %s\n", lvl)
-   // LOG_LEVEL not set, let's default to debug
-   if !ok {
-      lvl = "debug"
-   }
-   // parse string, this is built-in feature of logrus
-   ll, err := log.ParseLevel(lvl)
-   if err != nil {
-      ll = log.DebugLevel
-   }
-   // set global log level
-   log.SetLevel(ll)
-   log.SetFormatter(&log.TextFormatter{ForceQuote: false, DisableQuote: true})
-}
 
 func wrap(f func(client *client.GraphqlClient, model model.Model) (event handler.ProgressEvent, err error), req handler.Request, currentModel *Model, prevModel *Model) (event handler.ProgressEvent, err error) {
    defer func() {
@@ -54,6 +38,7 @@ func wrap(f func(client *client.GraphqlClient, model model.Model) (event handler
       }
       err = fmt.Errorf("%w originalError: %s panicError: %s Stack trace: %s", &cferror.ServiceInternalError{}, originalError, panicError, stack)
    }()
+   logging.Setup()
 
    fmt.Println("")
    logging.Dump(log.TraceLevel, os.Environ(), "os.Environ: ")

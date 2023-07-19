@@ -39,6 +39,10 @@ func (p *Payload) HasTags() bool {
    return p.model.Tags != nil
 }
 
+func (p *Payload) GetTypeName() string {
+   return typeName
+}
+
 func NewPayload(m *Model) *Payload {
    return &Payload{
       model:  m,

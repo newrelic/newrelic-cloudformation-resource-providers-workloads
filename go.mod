@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/aws-cloudformation/cloudformation-cli-go-plugin v1.0.3
-	github.com/newrelic/newrelic-cloudformation-resource-providers-common v1.1.0
+	github.com/newrelic/newrelic-cloudformation-resource-providers-common v1.1.4
 	github.com/sirupsen/logrus v1.9.0
 )
 
