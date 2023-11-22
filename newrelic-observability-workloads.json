@@ -1,7 +1,7 @@
 {
   "typeName": "NewRelic::Observability::Workloads",
   "description": "CRUD operations for New Relic Workloads via the NerdGraph API",
-  "sourceUrl": "https://github.com/newrelice/newrelic-cloudformation-resource-providers-workloads",
+  "sourceUrl": "https://github.com/newrelic/newrelic-cloudformation-resource-providers-workloads",
   "tagging": {
     "taggable": true
   },
