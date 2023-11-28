@@ -1,0 +1,46 @@
+{
+    "properties": {
+        "Endpoint": {
+            "type": "string",
+            "default": "https://api.newrelic.com/graphql"
+        },
+        "APIKey": {
+            "type": "string"
+        },
+        "AccountID": {
+            "type": "string"
+        },
+        "LogLevel": {
+            "type": "string",
+            "default": "info"
+        }
+    },
+    "additionalProperties": false,
+    "required": [
+        "APIKey",
+        "AccountID"
+    ],
+    "definitions": {
+        "TagObject": {
+            "type": "object",
+            "required": [
+                "Key",
+                "Values"
+            ],
+            "properties": {
+                "Key": {
+                    "type": "string"
+                },
+                "Values": {
+                    "type": "array",
+                    "insertionOrder": false,
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "typeName": "NewRelic::Observability::Workloads"
+}
